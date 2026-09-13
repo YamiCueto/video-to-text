@@ -1,12 +1,12 @@
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
 from webapp.server import create_app
-from webapp.storage import JobStore, atomic_json, parse_srt, read_json
+from webapp.storage import JobStore, atomic_json, read_json
 
 
 class WebAppTests(unittest.TestCase):

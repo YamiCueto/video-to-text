@@ -83,14 +83,11 @@ Abre esta carpeta en VS Code y utiliza su terminal PowerShell. Requiere Python 3
 y FFmpeg. Los comandos invocan directamente el entorno; no necesitas activarlo.
 
 ```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+uv sync
 winget install --id Gyan.FFmpeg --exact
-.\.venv\Scripts\python.exe transcribe.py --check
+uv run python transcribe.py --check
 ```
 
-Si `.venv` ya existe, omite su creación. Si no tiene pip, puedes utilizar
-`uv pip install --python .venv\Scripts\python.exe -r requirements.txt`.
 El programa busca FFmpeg en PATH y en su instalación de WinGet, sin modificar
 la configuración global de Windows. También acepta `--ffmpeg-dir "C:\ruta\bin"`.
 
@@ -146,9 +143,8 @@ No se reemplazan resultados existentes salvo que pases `--overwrite`.
 Para archivos con el mismo nombre, utiliza distintos `--output-dir`.
 
 ```powershell
-.\.venv\Scripts\python.exe transcribe.py --help
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+uv run python transcribe.py --help
+uv run python -m unittest discover -s tests -v
 ```
 
 ## Alcance y errores habituales
@@ -156,7 +152,7 @@ Para archivos con el mismo nombre, utiliza distintos `--output-dir`.
 - YouTube requiere internet; videos privados, eliminados o restringidos pueden fallar.
   No se admiten directos en curso ni estrenos futuros, ni se leen cookies del navegador.
 - Si YouTube deja de descargar, revisa el error de yt-dlp. Su integración puede
-  requerir actualizar la versión fijada en `requirements.txt` y reinstalarla;
+  requerir actualizar la versión fijada en `pyproject.toml` y sincronizarla;
   consulta sus [dependencias oficiales](https://github.com/yt-dlp/yt-dlp#dependencies)
   si informa que falta un motor JavaScript.
   El script habilita Deno y Node.js si están instalados en PATH.

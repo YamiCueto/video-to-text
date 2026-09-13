@@ -1,9 +1,9 @@
 """Un proceso aislado por transcripción, con progreso de audio real."""
 import importlib
-from pathlib import Path
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 from transcribe import configure_ffmpeg, download_audio, write_outputs, youtube_id
 from webapp.storage import ROOT, atomic_json, read_json

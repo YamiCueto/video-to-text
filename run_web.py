@@ -32,8 +32,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.stop:
         import json
-        from urllib.request import Request, urlopen
         from urllib.error import URLError
+        from urllib.request import Request, urlopen
         address = f"http://127.0.0.1:{args.port}"
         try:
             with urlopen(address + "/api/config", timeout=5) as response:
@@ -47,6 +47,7 @@ if __name__ == "__main__":
     os.environ["PYTHONUTF8"] = "1"
     with lock_workspace():
         import uvicorn
+
         from webapp.server import create_app
         app = create_app()
         server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=args.port, access_log=False))

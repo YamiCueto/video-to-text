@@ -3,11 +3,11 @@
 import argparse
 import os
 import re
-from contextlib import ExitStack
-from pathlib import Path
 import shutil
 import subprocess
 import sys
+from contextlib import ExitStack
+from pathlib import Path
 from tempfile import TemporaryDirectory
 from urllib.parse import parse_qs, urlparse
 
@@ -157,7 +157,7 @@ def main(argv=None):
             print(f"Python: {sys.version.split()[0]}\nWhisper: {whisper.__version__}\n"
                   f"PyTorch: {torch.__version__}\nyt-dlp: {yt_dlp_version}\nCUDA disponible: {cuda}\nFFmpeg: {ffmpeg}")
             if "dev" in torch.__version__:
-                print("Aviso: PyTorch es una versión de desarrollo; requirements.txt fija una estable.")
+                print("Aviso: PyTorch es una versión de desarrollo; uv.lock fija una estable.")
             return 0
         if args.model not in whisper.available_models():
             raise ValueError("Modelo desconocido. Disponibles: " + ", ".join(whisper.available_models()))
