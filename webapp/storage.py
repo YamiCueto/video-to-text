@@ -1,14 +1,14 @@
 """Persistencia local, importación de resultados y cola de un solo proceso."""
-from datetime import datetime, timezone
 import json
 import os
-from pathlib import Path
 import re
 import subprocess
 import sys
 import threading
 import time
 import uuid
+from datetime import UTC, datetime
+from pathlib import Path
 
 from transcribe import write_outputs
 
@@ -17,7 +17,7 @@ TERMINAL = {"completed", "failed", "cancelled"}
 
 
 def now():
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def read_json(path):
@@ -126,7 +126,7 @@ class JobStore:
                           "url": f"https://www.youtube.com/watch?v={video[1]}" if video else "",
                           "model": "small" if "revision-small" in relative else "unknown",
                           "language": "unknown", "device": "unknown", "glossary": "",
-                          "created_at": datetime.fromtimestamp(text_path.stat().st_mtime, timezone.utc).isoformat(),
+                          "created_at": datetime.fromtimestamp(text_path.stat().st_mtime, UTC).isoformat(),
                           "updated_at": now(), "status": "completed", "stage": "Importada del workspace",
                           "progress": 100, "reviewed": False, "revision": 0,
                           "duration": segments[-1]["end"], "imported_from": relative, "error": None})
