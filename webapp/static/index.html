@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light"><title>Video to Text — Estudio local</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%232e3d35'/%3E%3Cpath d='M12 17v6m8-12v18m8-12v6' stroke='%23e8a765' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css"><script defer src="/static/app.js"></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="Video to Text, inicio"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>video<span class="brand-light"> to </span>text<small>ESTUDIO LOCAL</small></span></a>
+  <button id="new-button" class="button primary full"><span aria-hidden="true">＋</span> Nueva transcripción</button>
+  <p class="nav-label">TU ESPACIO</p>
+  <button class="nav-item active" id="library-button"><span aria-hidden="true">▤</span> Biblioteca <span id="library-count" class="count">0</span></button>
+  <div class="sidebar-note"><span class="local-dot"></span><strong>En tu equipo</strong><p>Tus archivos y transcripciones se guardan en este workspace.</p><span class="small-muted">Sin cuenta · Sin clave de API</span></div>
+  <div class="sidebar-bottom">Hecho para escuchar.<br><strong>Pensado para revisar.</strong><span>VIDEO TO TEXT / 01</span></div>
+</aside>
+<main>
+  <header class="topbar"><div><span class="crumb">Workspace</span><span class="slash">/</span><span id="breadcrumb">Biblioteca</span></div><span class="local-pill"><span class="local-dot"></span> LOCAL <span id="connection-label">· Conectado</span></span></header>
+  <div class="main-content">
+    <section id="home-view">
+      <div class="page-heading"><div><p class="eyebrow">DEL AUDIO A LAS IDEAS</p><h1>Escucha menos veces.<br>Encuentra cada palabra.</h1><p class="subtitle">Transcribe, escucha y afina el texto. Todo en tu equipo.</p></div><div class="heading-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+      <section class="create-card" aria-labelledby="create-heading">
+        <div class="create-main">
+          <div class="section-heading"><span class="step-number">01</span><h2 id="create-heading">¿Qué quieres transcribir?</h2></div>
+          <div class="source-tabs" role="tablist" aria-label="Origen del audio"><button id="youtube-tab" class="source-tab selected" role="tab" aria-selected="true" aria-controls="youtube-panel">▷ Enlace de YouTube</button><button id="file-tab" class="source-tab" role="tab" aria-selected="false" aria-controls="file-panel">↑ Archivo local</button></div>
+          <form id="create-form">
+            <div id="youtube-panel" role="tabpanel"><label for="url-input">Enlace del video</label><input id="url-input" type="url" placeholder="https://www.youtube.com/watch?v=…" autocomplete="off"><p class="field-hint">Videos, Shorts y enlaces compartidos. Un video por transcripción.</p></div>
+            <div id="file-panel" role="tabpanel" hidden><label class="drop-zone" id="drop-zone" for="file-input"><span class="upload-symbol" aria-hidden="true">↑</span><strong id="file-label">Arrastra tu audio o video aquí</strong><span>o selecciona un archivo · hasta 1 GB</span><input id="file-input" type="file" accept=".mp3,.mp4,.m4a,.wav,.mkv,.webm,.mov,.flac,.ogg,.aac"></label></div>
+            <div class="form-grid"><div><label for="model-input">Modelo</label><select id="model-input" name="model"><option value="small">Small · recomendado</option></select></div><div><label for="language-input">Idioma del audio</label><select id="language-input" name="language"><option value="es">Español</option></select></div></div>
+            <details class="advanced"><summary>Personalizar transcripción <span aria-hidden="true">＋</span></summary><label for="title-input">Nombre (opcional)</label><input id="title-input" name="title" maxlength="160" placeholder="Por ejemplo: Patrones de diseño agénticos"><label for="glossary-input">Vocabulario técnico (opcional)</label><textarea id="glossary-input" name="glossary" maxlength="1000" rows="2" placeholder="Codex, Claude, LLM, singleton, circuit breaker…"></textarea><p class="field-hint">Da contexto a Whisper. Ayuda con nombres y términos; no garantiza su reconocimiento.</p><label for="device-input">Procesamiento</label><select id="device-input" name="device"><option value="auto">Automático · GPU si está disponible</option><option value="cuda">GPU (CUDA)</option><option value="cpu">CPU</option></select></details>
+            <p id="form-error" class="error-message" role="alert" hidden></p><div class="submit-row"><span id="model-hint" class="field-hint">Small ya está disponible en tu equipo.</span><button class="button primary" id="submit-button" type="submit">Transcribir <span aria-hidden="true">↗</span></button></div>
+          </form>
+        </div>
+        <aside class="create-aside"><span class="mini-label">UN FLUJO SENCILLO</span><div class="flow-step"><span>1</span><div><strong>Añade tu fuente</strong><p>Un enlace o un archivo de audio o video.</p></div></div><div class="flow-step"><span>2</span><div><strong>Deja que Whisper escuche</strong><p>Procesamiento local, sin enviar tu audio a una API.</p></div></div><div class="flow-step"><span>3</span><div><strong>Revisa y exporta</strong><p>Corrige cada fragmento y descarga TXT o SRT.</p></div></div><div class="quality-note"><span aria-hidden="true">✦</span><p><strong>La precisión importa.</strong><br>Small es el punto de partida. Escucha los nombres y términos técnicos antes de dar el texto por listo.</p></div></aside>
+      </section>
+      <section class="library" aria-labelledby="library-heading"><div class="library-header"><div><h2 id="library-heading">Tu biblioteca <span id="jobs-count">0</span></h2><p>Retoma una transcripción donde la dejaste.</p></div><label class="search-wrap"><span aria-hidden="true">⌕</span><input id="search-input" placeholder="Buscar transcripción…" aria-label="Buscar transcripción"></label></div><div class="filters" aria-label="Filtrar transcripciones"><button data-filter="all" class="filter selected">Todas</button><button data-filter="pending" class="filter">Por revisar</button><button data-filter="reviewed" class="filter">Revisadas</button><button data-filter="active" class="filter">En proceso</button></div><div id="jobs-list"></div></section>
+    </section>
+    <section id="detail-view" hidden aria-labelledby="detail-title"></section>
+    <footer class="footer"><span>Tu audio. Tus palabras. Tu espacio.</span><span>Whisper + yt-dlp <span class="footer-dot">·</span> Local v1.0</span></footer>
+  </div>
+</main>
+<div id="toast" class="toast" role="status" hidden></div>
+</body></html>
