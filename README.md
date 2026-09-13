@@ -5,6 +5,18 @@
 Aplicación web local para transcribir, escuchar y corregir audio. Todo el código,
 los modelos y la biblioteca viven en este workspace. También conserva la CLI.
 
+## Architecture
+
+![Video to Text Runtime Architecture](docs/architecture/video-to-text-runtime.png)
+
+Video to Text runs entirely on the local workstation. FastAPI coordinates
+jobs, a single JobRunner launches isolated worker subprocesses, yt-dlp
+and FFmpeg prepare media, and Whisper/PyTorch performs transcription
+using CUDA when available or CPU otherwise. Results remain persisted
+locally under `.local/jobs`.
+
+[Explore the interactive architecture →](docs/architecture/video-to-text-runtime.architecture.html)
+
 ## Abrir la app web
 
 Con las dependencias instaladas, ejecuta desde la terminal de VS Code:

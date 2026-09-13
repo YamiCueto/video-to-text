@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Video to Text",
+    "subtitle": "High-Level Runtime Architecture",
+    "output": "video-to-text-runtime.architecture.html",
+    "quality_profile": "showcase",
+    "visual_preset": "signal-flow",
+    "views": [
+      { "id": "primary-path", "label": "Primary Runtime Path", "focus": ["browser", "fastapi", "queue", "worker", "storage"], "note": "The core pipeline from browser request to persisted job artifacts." },
+      { "id": "audio-extraction", "label": "Audio Extraction", "focus": ["youtube", "local_files", "ytdlp", "worker"], "note": "Worker acquires audio via direct upload or yt-dlp download." },
+      { "id": "inference", "label": "AI Inference", "focus": ["worker", "whisper"], "note": "Isolated worker subprocess calls Whisper for transcription." }
+    ]
+  },
+  "components": [
+    { "id": "browser", "type": "frontend", "label": "Browser", "sublabel": "UI & local token", "pos": [40, 240], "size": [130, 60] },
+    { "id": "fastapi", "type": "backend", "label": "FastAPI Server", "sublabel": "mutation endpoints", "pos": [250, 240], "size": [130, 60], "tag": "cancel path" },
+    { "id": "local_files", "type": "external", "label": "Local Files", "sublabel": "audio / video input", "pos": [250, 100], "size": [130, 60] },
+    { "id": "queue", "type": "backend", "label": "JobStore / Runner", "sublabel": "single execution", "pos": [460, 240], "size": [130, 60] },
+    { "id": "worker", "type": "backend", "label": "Worker Subprocess", "sublabel": "isolated execution", "pos": [670, 240], "size": [130, 60] },
+    { "id": "youtube", "type": "cloud", "label": "YouTube", "sublabel": "video source", "pos": [880, 100], "size": [130, 60] },
+    { "id": "ytdlp", "type": "external", "label": "yt-dlp & FFmpeg", "sublabel": "fetch & extract", "pos": [670, 100], "size": [130, 60] },
+    { "id": "whisper", "type": "backend", "label": "Whisper & PyTorch", "sublabel": "inference", "pos": [670, 380], "size": [130, 60], "tag": "CUDA / CPU" },
+    { "id": "storage", "type": "external", "label": "Job Artifacts", "sublabel": ".local/jobs", "pos": [880, 240], "size": [130, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Local System Environment", "wraps": ["fastapi", "queue", "worker", "ytdlp", "whisper", "storage"] }
+  ],
+  "connections": [
+    { "id": "browser-fastapi", "from": "browser", "to": "fastapi", "label": "HTTP API", "variant": "emphasis" },
+    { "id": "local-fastapi", "from": "local_files", "to": "fastapi", "label": "upload", "fromSide": "bottom", "toSide": "top", "labelDy": 24 },
+    { "id": "fastapi-queue", "from": "fastapi", "to": "queue", "label": "submit job" },
+    { "id": "queue-worker", "from": "queue", "to": "worker", "label": "spawn" },
+    { "id": "youtube-ytdlp", "from": "youtube", "to": "ytdlp", "label": "download", "fromSide": "left", "toSide": "right" },
+    { "id": "ytdlp-worker", "from": "ytdlp", "to": "worker", "label": "audio stream", "fromSide": "bottom", "toSide": "top", "labelDy": 24 },
+    { "id": "worker-whisper", "from": "worker", "to": "whisper", "label": "process audio", "fromSide": "bottom", "toSide": "top", "labelDy": 24 },
+    { "id": "worker-storage", "from": "worker", "to": "storage", "label": "persist outputs" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Application Design", "items": ["Local-first desktop application without cloud backend", "No external databases or authentication services", "Local token protects mutation endpoints"] },
+    { "dot": "emerald", "title": "Execution Isolation", "items": ["JobRunner ensures single-worker execution to avoid GPU OOM", "Worker runs in an isolated subprocess with a cancellation path"] },
+    { "dot": "rose", "title": "Artifacts & Compute", "items": ["Persists listen.mp3, transcript.txt, transcript.srt, and result.json", "Selects CUDA or CPU automatically for PyTorch inference"] }
+  ]
+}
