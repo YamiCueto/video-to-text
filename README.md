@@ -1,5 +1,7 @@
 # Video to text
 
+[![CI](https://github.com/YamiCueto/video-to-text/actions/workflows/ci.yml/badge.svg)](https://github.com/YamiCueto/video-to-text/actions/workflows/ci.yml)
+
 Aplicación web local para transcribir, escuchar y corregir audio. Todo el código,
 los modelos y la biblioteca viven en este workspace. También conserva la CLI.
 
@@ -163,20 +165,20 @@ Para archivos con el mismo nombre, utiliza distintos `--output-dir`.
 - Archivo ilegible o sin audio: se informa el error de decodificación.
 - Las transcripciones automáticas deben revisarse, especialmente con ruido o silencio.
 - `outputs/`, `models/` y archivos multimedia están excluidos de Git. Los demás
-  `.txt` sí pueden versionarse. La carpeta todavía no tiene repositorio Git inicializado.
+  `.txt` sí pueden versionarse.
 
-## Validación realizada
+## Validación automatizada
 
-- Web: pruebas de creación, carga de archivos, permisos locales, cancelación,
-  edición con conservación del original, versiones concurrentes, importación,
-  reinicio del historial, reproducción por rangos y reintentos de escritura en Windows.
+El proyecto cuenta con 21 pruebas automatizadas (`tests/`) que cubren la API, CLI y core:
+- **Web/API:** creación, carga de archivos, permisos locales, edición concurrente, retries por sharing violations, importación y range requests para audio.
+- **Transcriptor:** protección de archivos, validación de enlaces, directos, manejo de errores de descarga y limpieza temporal.
+
+## Pruebas manuales/reales
+
 - Pruebas reales de la web: YouTube con `small`/CUDA y archivo WAV con `tiny`/CPU;
   reproducción y guardado de correcciones en Chrome; diseño a 390 px y escritorio.
   La selección automatizada de archivos en Chrome está limitada por el permiso
   de acceso a archivos de su extensión; la carga multipart se verificó en la API.
-- Diez pruebas automatizadas: exportación, protección de archivos, validación de
-  enlaces, rechazo de directos, errores de descarga y flujo URL → TXT/SRT con
-  descarga y modelo simulados, incluyendo limpieza temporal ante errores.
 - Prueba real de YouTube con el video público `jNQXAC9IVRw`: descarga de audio
   WebM y generación de TXT/SRT con `tiny` en CUDA. La precisión del texto sigue
   dependiendo del modelo y del audio; esta prueba comprueba el flujo técnico.
